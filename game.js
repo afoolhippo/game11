@@ -27,6 +27,8 @@ const bgm = document.getElementById("bgm");
 const gokuSe = document.getElementById("gokuSe");
 const outSe = document.getElementById("outSe");
 
+const titleLogo = document.getElementById("titleLogo");
+
 let score = 0;
 let tapo = 0;
 
@@ -361,7 +363,8 @@ ${resultWord}
 
 ${score}杯
 
-無料ブラウザゲーム「タポタポオレンジ」
+無料ブラウザゲーム
+「タポタポオレンジ」
 https://afoolhippo.github.io/game11/
 
 #タポタポオレンジ
