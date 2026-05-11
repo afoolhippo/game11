@@ -30,6 +30,8 @@ const outSe = document.getElementById("outSe");
 let score = 0;
 let tapo = 0;
 
+let limit = 15;
+
 let orangeX = -300;
 
 let orangeType = "small";
@@ -140,6 +142,10 @@ async function startGame() {
   score = 0;
   tapo = 0;
 
+  /* 毎回ランダム限界 */
+
+  limit = 13 + Math.random() * 4;
+
   scoreEl.textContent = "0";
 
   updateFace();
@@ -215,7 +221,9 @@ function gameLoop() {
       spawnOrange();
     }
 
-    if (tapo >= 15) {
+    /* ランダム限界 */
+
+    if (tapo >= limit) {
 
       gameOver(false);
       return;
