@@ -15,16 +15,19 @@
 
   <img src="title.png" id="titleLogo" alt="タポタポオレンジ">
 
-  <button id="startBtn">START</button>
+  <button id="startBtn">タップしてスタート</button>
 
 </div>
+
+<!-- 暗転 -->
+<div id="fadeScreen" class="hidden"></div>
 
 <!-- ゲーム -->
 <div id="gameScreen" class="screen hidden">
 
   <div id="topText">
 
-    <div id="titleText">
+    <div id="mainTitle">
       オレンジ何杯いける！？
     </div>
 
@@ -75,9 +78,7 @@
 
   <div id="resultFace">(T_T)</div>
 
-  <div id="resultText">
-    もう飲めない
-  </div>
+  <div id="resultText"></div>
 
   <div id="resultScore"></div>
 
@@ -89,7 +90,16 @@
 
 </div>
 
+<!-- 音 -->
 <audio id="bgm" src="bgm.mp3" loop></audio>
+
+<audio id="startSe" src="start.mp3"></audio>
+
+<audio id="gokuSe" src="goku.mp3"></audio>
+
+<audio id="nomidokiSe" src="nomidoki.mp3"></audio>
+
+<audio id="outSe" src="out.mp3"></audio>
 
 <script src="game.js"></script>
 

@@ -2,6 +2,8 @@ const titleScreen = document.getElementById("titleScreen");
 const gameScreen = document.getElementById("gameScreen");
 const resultScreen = document.getElementById("resultScreen");
 
+const fadeScreen = document.getElementById("fadeScreen");
+
 const startBtn = document.getElementById("startBtn");
 
 const drinkBtn = document.getElementById("drinkBtn");
@@ -17,9 +19,15 @@ const face = document.getElementById("face");
 
 const scoreEl = document.getElementById("score");
 
+const resultText = document.getElementById("resultText");
 const resultScore = document.getElementById("resultScore");
 
 const bgm = document.getElementById("bgm");
+
+const startSe = document.getElementById("startSe");
+const gokuSe = document.getElementById("gokuSe");
+const nomidokiSe = document.getElementById("nomidokiSe");
+const outSe = document.getElementById("outSe");
 
 let score = 0;
 let tapo = 0;
@@ -32,10 +40,14 @@ let speed = 4;
 
 let gameRunning = false;
 
+let introFinished = false;
+
+let wasInZone = false;
+
 const DRINK_MIN = window.innerWidth / 2 - 90;
 const DRINK_MAX = window.innerWidth / 2 + 90;
 
-/* 顔更新 */
+/* 顔 */
 
 function updateFace() {
 
@@ -57,11 +69,12 @@ function updateFace() {
   }
 }
 
-/* オレンジ生成 */
+/* オレンジ */
 
-function spawnOrange() {
+function spawnOrange(forceSmall = false) {
 
-  const isLarge = Math.random() < 0.3;
+  const isLarge =
+    forceSmall ? false : Math.random() < 0.3;
 
   if (isLarge) {
 
@@ -79,7 +92,7 @@ function spawnOrange() {
   orangeX = -220;
 }
 
-/* ベルトの凸 */
+/* ベルト凸 */
 
 function createTicks() {
 
@@ -99,11 +112,24 @@ function createTicks() {
   }
 }
 
-/* ゲーム開始 */
+/* スタート */
 
-function startGame() {
+async function startGame() {
 
   titleScreen.classList.add("hidden");
+
+  fadeScreen.classList.remove("hidden");
+
+  fadeScreen.classList.add("show");
+
+  try {
+
+    startSe.currentTime = 0;
+    startSe.play();
+
+  } catch(e) {}
+
+  await new Promise(resolve => setTimeout(resolve, 1400));
 
   gameScreen.classList.remove("hidden");
 
@@ -114,21 +140,29 @@ function startGame() {
 
   updateFace();
 
-  spawnOrange();
-
   createTicks();
 
-  gameRunning = true;
-
-  bgm.volume = 0.7;
-
   try {
+
+    bgm.volume = 0.7;
 
     bgm.currentTime = 0;
 
     bgm.play();
 
   } catch(e) {}
+
+  await new Promise(resolve => setTimeout(resolve, 1200));
+
+  fadeScreen.classList.remove("show");
+
+  await new Promise(resolve => setTimeout(resolve, 1800));
+
+  introFinished = true;
+
+  spawnOrange(true);
+
+  gameRunning = true;
 
   requestAnimationFrame(gameLoop);
 }
@@ -146,6 +180,18 @@ function gameLoop() {
   const inZone =
     orangeX > DRINK_MIN &&
     orangeX < DRINK_MAX;
+
+  if (!wasInZone && inZone) {
+
+    try {
+
+      nomidokiSe.currentTime = 0;
+      nomidokiSe.play();
+
+    } catch(e) {}
+  }
+
+  wasInZone = inZone;
 
   if (inZone) {
 
@@ -171,7 +217,7 @@ function gameLoop() {
 
   if (tapo >= 15) {
 
-    gameOver();
+    gameOver(false);
     return;
   }
 
@@ -183,6 +229,13 @@ function gameLoop() {
 function drinkOrange() {
 
   if (drinkBtn.disabled) return;
+
+  try {
+
+    gokuSe.currentTime = 0;
+    gokuSe.play();
+
+  } catch(e) {}
 
   score++;
 
@@ -204,13 +257,36 @@ function drinkOrange() {
 
 /* 終了 */
 
-function gameOver() {
+function gameOver(safe) {
 
   gameRunning = false;
+
+  bgm.pause();
+
+  if (!safe) {
+
+    try {
+
+      outSe.currentTime = 0;
+      outSe.play();
+
+    } catch(e) {}
+  }
 
   gameScreen.classList.add("hidden");
 
   resultScreen.classList.remove("hidden");
+
+  if (safe) {
+
+    resultText.textContent =
+      "ギリギリセーフ！";
+
+  } else {
+
+    resultText.textContent =
+      "ギリギリアウト！";
+  }
 
   resultScore.textContent = `${score}杯`;
 }
@@ -221,7 +297,10 @@ startBtn.addEventListener("click", startGame);
 
 drinkBtn.addEventListener("click", drinkOrange);
 
-giveupBtn.addEventListener("click", gameOver);
+giveupBtn.addEventListener("click", () => {
+
+  gameOver(true);
+});
 
 retryBtn.addEventListener("click", () => {
 
@@ -236,8 +315,13 @@ homeBtn.addEventListener("click", () => {
 
 shareBtn.addEventListener("click", () => {
 
+  const resultWord =
+    resultText.textContent;
+
   const text =
 `オレンジジュース、もう飲めない🥤🍊
+
+${resultWord}
 
 ${score}杯
 
