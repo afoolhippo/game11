@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+
+  <title>タポタポオレンジ</title>
+
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<!-- タイトル -->
+<div id="titleScreen" class="screen">
+
+  <img src="title.png" id="titleLogo" alt="タポタポオレンジ">
+
+  <button id="startBtn">START</button>
+
+</div>
+
+<!-- ゲーム -->
+<div id="gameScreen" class="screen hidden">
+
+  <div id="topText">
+
+    <div id="titleText">
+      オレンジ何杯いける！？
+    </div>
+
+    <div class="subText">
+      限界ギリギリまで攻めろ！
+    </div>
+
+    <div class="subText">
+      無理ならギブアップ！
+    </div>
+
+  </div>
+
+  <div id="face">(^_^)</div>
+
+  <div id="scoreArea">
+    現在 <span id="score">0</span> 杯
+  </div>
+
+  <div id="drinkGuide">
+    ↓ 飲みどき
+  </div>
+
+  <div id="conveyorArea">
+
+    <div id="conveyorLine"></div>
+
+    <div id="drinkZone"></div>
+
+    <div id="ticks"></div>
+
+    <img src="orange.png" id="orange">
+
+  </div>
+
+  <div id="buttons">
+
+    <button id="drinkBtn" disabled>飲む！</button>
+
+    <button id="giveupBtn">ギブアップ</button>
+
+  </div>
+
+</div>
+
+<!-- リザルト -->
+<div id="resultScreen" class="screen hidden">
+
+  <div id="resultFace">(T_T)</div>
+
+  <div id="resultText">
+    もう飲めない
+  </div>
+
+  <div id="resultScore"></div>
+
+  <button id="shareBtn">Xでシェア</button>
+
+  <button id="retryBtn">もう一回</button>
+
+  <button id="homeBtn">カバゲーセンへ</button>
+
+</div>
+
+<audio id="bgm" src="bgm.mp3" loop></audio>
+
+<script src="game.js"></script>
+
+</body>
+</html>

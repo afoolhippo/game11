@@ -1,0 +1,248 @@
+@import url('https://fonts.googleapis.com/css2?family=DotGothic16&display=swap');
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  overflow: hidden;
+
+  background: #ffd774;
+
+  color: #4a2c00;
+
+  font-family: 'DotGothic16', sans-serif;
+}
+
+.screen {
+  position: fixed;
+  inset: 0;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  padding: 20px;
+
+  text-align: center;
+}
+
+.hidden {
+  display: none !important;
+}
+
+/* タイトル */
+
+#titleScreen {
+  justify-content: flex-start;
+}
+
+#titleLogo {
+  width: 92%;
+  max-width: 520px;
+
+  margin-top: 20px;
+  margin-bottom: 30px;
+
+  image-rendering: pixelated;
+}
+
+/* 上部テキスト */
+
+#topText {
+  margin-top: 8px;
+}
+
+#titleText {
+  font-size: 34px;
+  margin-bottom: 8px;
+}
+
+.subText {
+  font-size: 20px;
+  margin-bottom: 4px;
+}
+
+/* 顔 */
+
+#face,
+#resultFace {
+  font-size: 72px;
+  line-height: 1;
+
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+
+/* スコア */
+
+#scoreArea {
+  font-size: 28px;
+  margin-bottom: 14px;
+}
+
+/* 飲みどき */
+
+#drinkGuide {
+  font-size: 22px;
+  margin-bottom: 8px;
+}
+
+/* コンベア */
+
+#conveyorArea {
+  position: relative;
+
+  width: 100%;
+  max-width: 900px;
+
+  height: 220px;
+
+  overflow: hidden;
+}
+
+#conveyorLine {
+  position: absolute;
+
+  left: 0;
+  right: 0;
+
+  bottom: 40px;
+
+  height: 6px;
+
+  background: #000;
+}
+
+/* 飲みどきゾーン */
+
+#drinkZone {
+  position: absolute;
+
+  left: 50%;
+  transform: translateX(-50%);
+
+  bottom: 34px;
+
+  width: 180px;
+  height: 18px;
+
+  background: rgba(255,255,255,0.45);
+
+  border: 4px solid #000;
+}
+
+/* ベルトの凸 */
+
+#ticks {
+  position: absolute;
+
+  left: 0;
+  right: 0;
+
+  bottom: 0;
+
+  height: 40px;
+}
+
+.tick {
+  position: absolute;
+
+  width: 5px;
+  height: 24px;
+
+  background: #000;
+}
+
+/* オレンジ */
+
+#orange {
+  position: absolute;
+
+  bottom: 46px;
+  left: -300px;
+
+  image-rendering: pixelated;
+}
+
+.orangeSmall {
+  width: 70px;
+}
+
+.orangeLarge {
+  width: 170px;
+}
+
+/* ボタン */
+
+#buttons {
+  margin-top: 20px;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+button {
+  width: 260px;
+
+  padding: 14px;
+
+  margin-bottom: 14px;
+
+  border: 4px solid #4a2c00;
+  border-radius: 12px;
+
+  background: #fff;
+
+  color: #4a2c00;
+
+  font-size: 28px;
+
+  font-family: 'DotGothic16', sans-serif;
+
+  cursor: pointer;
+}
+
+button:active {
+  transform: scale(0.96);
+}
+
+/* 飲むボタン */
+
+#drinkBtn:disabled {
+  opacity: 0.35;
+  cursor: default;
+}
+
+#drinkBtn.active {
+  animation: blink 0.5s infinite alternate;
+}
+
+@keyframes blink {
+
+  from {
+    transform: scale(1);
+  }
+
+  to {
+    transform: scale(1.05);
+  }
+}
+
+/* リザルト */
+
+#resultScreen {
+  justify-content: center;
+}
+
+#resultText {
+  font-size: 34px;
+  margin-bottom: 14px;
+}
+
+#resultScore {
+  font-size: 42px;
+  margin-bottom: 24px;
+}
