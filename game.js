@@ -327,7 +327,7 @@ function gameOver(safe) {
 /* ボタン */
 
 startBtn.addEventListener("click", startGame);
-
+titleLogo.addEventListener("click", startGame);
 drinkBtn.addEventListener("click", drinkOrange);
 
 giveupBtn.addEventListener("click", () => {
