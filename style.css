@@ -43,46 +43,39 @@ body {
   max-width: 520px;
 
   margin-top: 20px;
-  margin-bottom: 30px;
+  margin-bottom: 18px;
 
   image-rendering: pixelated;
 }
 
-/* 暗転 */
+#ruleText {
+  font-size: 22px;
+  line-height: 1.7;
 
-#fadeScreen {
-  position: fixed;
-  inset: 0;
-
-  background: rgba(0,0,0,0.45);
-
-  z-index: 999;
-
-  opacity: 0;
-
-  pointer-events: none;
-
-  transition: opacity 0.5s;
+  margin-bottom: 26px;
 }
 
-#fadeScreen.show {
-  opacity: 1;
+#startBtn {
+  width: 320px;
+
+  white-space: nowrap;
+
+  font-size: 24px;
 }
 
-/* 上部 */
+/* 戻る */
 
-#topText {
-  margin-top: 6px;
-}
+#backBtn {
+  position: absolute;
 
-#mainTitle {
-  font-size: 32px;
-  margin-bottom: 8px;
-}
+  top: 14px;
+  right: 14px;
 
-.subText {
-  font-size: 20px;
-  margin-bottom: 4px;
+  width: auto;
+
+  padding: 10px 14px;
+
+  font-size: 16px;
 }
 
 /* 顔 */
@@ -92,7 +85,7 @@ body {
   font-size: 72px;
   line-height: 1;
 
-  margin-top: 10px;
+  margin-top: 40px;
   margin-bottom: 10px;
 }
 
@@ -103,13 +96,6 @@ body {
   margin-bottom: 14px;
 }
 
-/* 飲みどき */
-
-#drinkGuide {
-  font-size: 22px;
-  margin-bottom: 8px;
-}
-
 /* コンベア */
 
 #conveyorArea {
@@ -118,7 +104,7 @@ body {
   width: 100%;
   max-width: 900px;
 
-  height: 220px;
+  height: 240px;
 
   overflow: hidden;
 }
@@ -149,10 +135,10 @@ body {
 
   border: 4px solid #000;
 
-  background: rgba(255,255,255,0.4);
+  background: rgba(255,255,255,0.25);
 }
 
-/* ベルトの凸 */
+/* ベルト凸 */
 
 #ticks {
   position: absolute;
@@ -194,10 +180,29 @@ body {
   width: 170px;
 }
 
+/* 飲む演出 */
+
+.drinkAnim {
+  animation: drinkAway 0.45s forwards;
+}
+
+@keyframes drinkAway {
+
+  from {
+    transform: translateY(0);
+    opacity: 1;
+  }
+
+  to {
+    transform: translateY(-90px);
+    opacity: 0;
+  }
+}
+
 /* ボタン */
 
 #buttons {
-  margin-top: 20px;
+  margin-top: 18px;
 
   display: flex;
   flex-direction: column;
@@ -229,10 +234,10 @@ button:active {
   transform: scale(0.96);
 }
 
-/* 飲むボタン */
+/* 飲む */
 
 #drinkBtn:disabled {
-  opacity: 0.3;
+  opacity: 0.28;
 }
 
 #drinkBtn.active {
@@ -246,7 +251,7 @@ button:active {
   }
 
   to {
-    transform: scale(1.06);
+    transform: scale(1.05);
   }
 }
 

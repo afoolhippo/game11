@@ -2,9 +2,9 @@ const titleScreen = document.getElementById("titleScreen");
 const gameScreen = document.getElementById("gameScreen");
 const resultScreen = document.getElementById("resultScreen");
 
-const fadeScreen = document.getElementById("fadeScreen");
-
 const startBtn = document.getElementById("startBtn");
+
+const backBtn = document.getElementById("backBtn");
 
 const drinkBtn = document.getElementById("drinkBtn");
 const giveupBtn = document.getElementById("giveupBtn");
@@ -36,13 +36,15 @@ let orangeX = -300;
 
 let orangeType = "small";
 
-let speed = 4;
+let speed = 2.3;
 
 let gameRunning = false;
 
 let introFinished = false;
 
 let wasInZone = false;
+
+let orangeStarted = false;
 
 const DRINK_MIN = window.innerWidth / 2 - 90;
 const DRINK_MAX = window.innerWidth / 2 + 90;
@@ -74,7 +76,7 @@ function updateFace() {
 function spawnOrange(forceSmall = false) {
 
   const isLarge =
-    forceSmall ? false : Math.random() < 0.3;
+    forceSmall ? false : Math.random() < 0.28;
 
   if (isLarge) {
 
@@ -89,10 +91,14 @@ function spawnOrange(forceSmall = false) {
     orange.className = "orangeSmall";
   }
 
+  orange.style.opacity = 1;
+
+  orange.classList.remove("drinkAnim");
+
   orangeX = -220;
 }
 
-/* ベルト凸 */
+/* 凸 */
 
 function createTicks() {
 
@@ -112,24 +118,28 @@ function createTicks() {
   }
 }
 
+function moveTicks() {
+
+  document.querySelectorAll(".tick").forEach(tick => {
+
+    let x = parseFloat(tick.style.left);
+
+    x += speed;
+
+    if (x > window.innerWidth + 30) {
+
+      x = -30;
+    }
+
+    tick.style.left = `${x}px`;
+  });
+}
+
 /* スタート */
 
 async function startGame() {
 
   titleScreen.classList.add("hidden");
-
-  fadeScreen.classList.remove("hidden");
-
-  fadeScreen.classList.add("show");
-
-  try {
-
-    startSe.currentTime = 0;
-    startSe.play();
-
-  } catch(e) {}
-
-  await new Promise(resolve => setTimeout(resolve, 1400));
 
   gameScreen.classList.remove("hidden");
 
@@ -144,7 +154,14 @@ async function startGame() {
 
   try {
 
-    bgm.volume = 0.7;
+    startSe.currentTime = 0;
+    startSe.play();
+
+  } catch(e) {}
+
+  try {
+
+    bgm.volume = 0.55;
 
     bgm.currentTime = 0;
 
@@ -152,19 +169,17 @@ async function startGame() {
 
   } catch(e) {}
 
-  await new Promise(resolve => setTimeout(resolve, 1200));
-
-  fadeScreen.classList.remove("show");
-
-  await new Promise(resolve => setTimeout(resolve, 1800));
-
-  introFinished = true;
-
-  spawnOrange(true);
-
   gameRunning = true;
 
   requestAnimationFrame(gameLoop);
+
+  setTimeout(() => {
+
+    orangeStarted = true;
+
+    spawnOrange(true);
+
+  }, 4000);
 }
 
 /* ループ */
@@ -173,52 +188,58 @@ function gameLoop() {
 
   if (!gameRunning) return;
 
-  orangeX += speed;
+  moveTicks();
 
-  orange.style.left = orangeX + "px";
+  if (orangeStarted) {
 
-  const inZone =
-    orangeX > DRINK_MIN &&
-    orangeX < DRINK_MAX;
+    orangeX += speed;
 
-  if (!wasInZone && inZone) {
+    orange.style.left = orangeX + "px";
 
-    try {
+    const inZone =
+      orangeX > DRINK_MIN &&
+      orangeX < DRINK_MAX;
 
-      nomidokiSe.currentTime = 0;
-      nomidokiSe.play();
+    if (!wasInZone && inZone) {
 
-    } catch(e) {}
-  }
+      try {
 
-  wasInZone = inZone;
+        nomidokiSe.volume = 0.22;
 
-  if (inZone) {
+        nomidokiSe.currentTime = 0;
 
-    drinkBtn.disabled = false;
+      } catch(e) {}
+    }
 
-    drinkBtn.classList.add("active");
+    wasInZone = inZone;
 
-  } else {
+    if (inZone) {
 
-    drinkBtn.disabled = true;
+      drinkBtn.disabled = false;
 
-    drinkBtn.classList.remove("active");
-  }
+      drinkBtn.classList.add("active");
 
-  if (orangeX > window.innerWidth + 240) {
+    } else {
 
-    tapo = Math.max(0, tapo - 0.5);
+      drinkBtn.disabled = true;
 
-    updateFace();
+      drinkBtn.classList.remove("active");
+    }
 
-    spawnOrange();
-  }
+    if (orangeX > window.innerWidth + 260) {
 
-  if (tapo >= 15) {
+      tapo = Math.max(0, tapo - 0.5);
 
-    gameOver(false);
-    return;
+      updateFace();
+
+      spawnOrange();
+    }
+
+    if (tapo >= 15) {
+
+      gameOver(false);
+      return;
+    }
   }
 
   requestAnimationFrame(gameLoop);
@@ -232,10 +253,15 @@ function drinkOrange() {
 
   try {
 
+    gokuSe.volume = 1.0;
+
     gokuSe.currentTime = 0;
+
     gokuSe.play();
 
   } catch(e) {}
+
+  orange.classList.add("drinkAnim");
 
   score++;
 
@@ -252,7 +278,13 @@ function drinkOrange() {
 
   updateFace();
 
-  spawnOrange();
+  drinkBtn.disabled = true;
+
+  setTimeout(() => {
+
+    spawnOrange();
+
+  }, 420);
 }
 
 /* 終了 */
@@ -268,6 +300,7 @@ function gameOver(safe) {
     try {
 
       outSe.currentTime = 0;
+
       outSe.play();
 
     } catch(e) {}
@@ -302,6 +335,11 @@ giveupBtn.addEventListener("click", () => {
   gameOver(true);
 });
 
+backBtn.addEventListener("click", () => {
+
+  location.reload();
+});
+
 retryBtn.addEventListener("click", () => {
 
   location.reload();
@@ -310,7 +348,7 @@ retryBtn.addEventListener("click", () => {
 homeBtn.addEventListener("click", () => {
 
   window.location.href =
-    "https://afoolhippo.github.io/home/";
+    "https://afoolhippo.github.io/home/?skipTitle=1";
 });
 
 shareBtn.addEventListener("click", () => {
@@ -325,10 +363,8 @@ ${resultWord}
 
 ${score}杯
 
-無料ブラウザゲーム
-「タポタポオレンジ」
-
-https://afoolhippo.github.io/game7/
+無料ブラウザゲーム「タポタポオレンジ」
+https://afoolhippo.github.io/game11/
 
 #タポタポオレンジ
 #カバゲーセン`;
