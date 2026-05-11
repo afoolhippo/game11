@@ -24,9 +24,7 @@ const resultScore = document.getElementById("resultScore");
 
 const bgm = document.getElementById("bgm");
 
-const startSe = document.getElementById("startSe");
 const gokuSe = document.getElementById("gokuSe");
-const nomidokiSe = document.getElementById("nomidokiSe");
 const outSe = document.getElementById("outSe");
 
 let score = 0;
@@ -40,14 +38,10 @@ let speed = 2.3;
 
 let gameRunning = false;
 
-let introFinished = false;
-
-let wasInZone = false;
-
 let orangeStarted = false;
 
-const DRINK_MIN = window.innerWidth / 2 - 90;
-const DRINK_MAX = window.innerWidth / 2 + 90;
+const DRINK_MIN = window.innerWidth / 2 - 110;
+const DRINK_MAX = window.innerWidth / 2 + 110;
 
 /* 顔 */
 
@@ -98,7 +92,7 @@ function spawnOrange(forceSmall = false) {
   orangeX = -220;
 }
 
-/* 凸 */
+/* ベルト凸 */
 
 function createTicks() {
 
@@ -154,13 +148,6 @@ async function startGame() {
 
   try {
 
-    startSe.currentTime = 0;
-    startSe.play();
-
-  } catch(e) {}
-
-  try {
-
     bgm.volume = 0.55;
 
     bgm.currentTime = 0;
@@ -196,22 +183,15 @@ function gameLoop() {
 
     orange.style.left = orangeX + "px";
 
+    const orangeWidth =
+      orangeType === "large" ? 170 : 70;
+
+    const orangeCenter =
+      orangeX + orangeWidth / 2;
+
     const inZone =
-      orangeX > DRINK_MIN &&
-      orangeX < DRINK_MAX;
-
-    if (!wasInZone && inZone) {
-
-      try {
-
-        nomidokiSe.volume = 0.22;
-
-        nomidokiSe.currentTime = 0;
-
-      } catch(e) {}
-    }
-
-    wasInZone = inZone;
+      orangeCenter > DRINK_MIN &&
+      orangeCenter < DRINK_MAX;
 
     if (inZone) {
 
@@ -249,7 +229,17 @@ function gameLoop() {
 
 function drinkOrange() {
 
-  if (drinkBtn.disabled) return;
+  const orangeWidth =
+    orangeType === "large" ? 170 : 70;
+
+  const orangeCenter =
+    orangeX + orangeWidth / 2;
+
+  const inZone =
+    orangeCenter > DRINK_MIN &&
+    orangeCenter < DRINK_MAX;
+
+  if (!inZone) return;
 
   try {
 
